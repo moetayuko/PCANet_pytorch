@@ -123,7 +123,7 @@ class PCANet:
                 Bhist_i = torch.empty(B * 2 ** L2)
                 Bhist_i_view = Bhist_i.view(B, -1)
                 for i in range(B):
-                    Bhist_i_view[i] = torch.histc(blocks[i], 2 ** L2)
+                    Bhist_i_view[i] = torch.histc(blocks[i], 2 ** L2, min=0, max=255)
                 Bhist.append(Bhist_i)
             Bhist = torch.cat(Bhist)
             f.append(Bhist)
