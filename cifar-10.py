@@ -7,7 +7,7 @@ import torch
 import matplotlib.pyplot as plt
 from torchvision.datasets import CIFAR10
 from sklearn.utils import gen_batches
-from liblinear import liblinearutil
+from sklearn.svm import LinearSVC
 from pcanet import PCANet
 
 #%%
@@ -89,8 +89,8 @@ plt.show()
 #%%
 print(' ====== Training Linear SVM Classifier ======= ')
 time_start = time.time()
-model = liblinearutil.train(
-    train_set_y, train_features, '-s 1 -c 10 -q')
+svm = LinearSVC(C=10)
+svm.fit(train_features, train_set_y)
 time_end = time.time()
 print('Time cost %.2f s' % (time_end - time_start))
 del train_features, train_set_y
@@ -102,8 +102,7 @@ n_correct = 0
 for batch in gen_batches(n_test, batch_size):
     test_features = net.extract_features(test_set_X[batch], False)
     test_features = scipy.sparse.csr_matrix(test_features)
-    pred_labels, (acc, mse, scc), pred_values = liblinearutil.predict(
-        test_set_y[batch], test_features, model)
+    pred_labels = svm.predict(test_features)
     n_correct += np.sum(np.asarray(pred_labels) == test_set_y[batch])
 print("Total accuracy = %g%% (%d/%d) (classification)" %
       (n_correct / n_test, n_correct, n_test))
