@@ -2,7 +2,7 @@ import math
 import torch
 import torch.nn.functional as F
 from torch import Tensor
-from incremental_pca import IncrementalPCA
+from .incremental_pca import IncrementalPCA
 
 
 class PCANet:
