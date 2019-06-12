@@ -133,7 +133,7 @@ class PCANet:
                 blkwise_fea = torch.empty(B, 2 ** L2)
                 for b in range(B):
                     blkwise_fea[b] = torch.histc(
-                        blocks[b], 2 ** L2, min=0, max=255)
+                        blocks[b], 2 ** L2, min=0, max=2 ** L2 - 1)
 
                 if pyramid:
                     # Convert to NCHW
